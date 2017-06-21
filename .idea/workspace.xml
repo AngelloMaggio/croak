@@ -18,8 +18,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="42" column="33" lean-forward="false" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
+            <state relative-caret-position="510">
+              <caret line="34" column="46" lean-forward="false" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
               <folding>
                 <element signature="e#1#25#0" expanded="true" />
               </folding>
@@ -27,20 +27,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="artifactoryreqs.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="artifactoryreqs.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/artifactoryreqs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
+            <state relative-caret-position="315">
+              <caret line="74" column="32" lean-forward="true" selection-start-line="74" selection-start-column="32" selection-end-line="74" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="croak.kv" pinned="false" current-in-tab="true">
+      <file leaf-file-name="croak.kv" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/croak.kv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="449">
+            <state relative-caret-position="690">
               <caret line="46" column="29" lean-forward="false" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
               <folding />
             </state>
@@ -56,13 +56,18 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>reqs</find>
+    </findStrings>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/croak.kv.py" />
+        <option value="$PROJECT_DIR$/croak.kv" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/artifactoryreqs.py" />
-        <option value="$PROJECT_DIR$/croak.kv" />
       </list>
     </option>
   </component>
@@ -351,10 +356,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/croak.kv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="29" lean-forward="false" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="42" column="33" lean-forward="false" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
+        <state relative-caret-position="510">
+          <caret line="34" column="46" lean-forward="false" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
           <folding>
             <element signature="e#1#25#0" expanded="true" />
           </folding>
@@ -363,16 +376,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/artifactoryreqs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/croak.kv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="46" column="29" lean-forward="false" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+        <state relative-caret-position="315">
+          <caret line="74" column="32" lean-forward="true" selection-start-line="74" selection-start-column="32" selection-end-line="74" selection-end-column="32" />
           <folding />
         </state>
       </provider>

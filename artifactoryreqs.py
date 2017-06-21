@@ -1,16 +1,23 @@
-reqs = {'repos': 'api/repositories',
+reqsget = {'repos': 'api/repositories',
         'storage': 'api/storageinfo',
         'tasks': 'api/tasks',
         'replication': 'api/replications/INC',
-        'user': 'api/security/users/INC'
-            }
+        'user': 'api/security/users/INC',
+        'getbundles': 'api/support/bundles'
+           }
 
-reqfuncs = {'repos': lambda x, y: repos(x, y),
+getfuncs = {'repos': lambda x, y: repos(x, y),
             'storage': lambda x, y: storage(x, y),
             'tasks': lambda x, y: tasks(x, y),
             'replication': lambda x, y: replication(x, y),
-            'user': lambda x, y: user(x, y)}
+            'user': lambda x, y: user(x, y),
+            'getbundles': lambda x, y: getbundles(x,y)
 
+            }
+
+reqspost = {'makebundle': 'api/support/bundles'}
+
+postfuncs = {'makebundle': lambda x, y: makebundle(x, y)}
 
 def repos(data, oArgs):
     out = ''
@@ -34,7 +41,7 @@ def storage(data, oArgs):
 
 def replication(data, oArgs):
     if oArgs == 'INC':
-        new_url = reqs[data[0]][:-3] + data[1]
+        new_url = reqsget[data[0]][:-3] + data[1]
         return new_url
 
     else:
@@ -52,10 +59,10 @@ def replication(data, oArgs):
 
 def user(data, oArgs):
     if oArgs == 'INC':
-        new_url = reqs[data[0]][:-3] + data[1]
+        new_url = reqsget[data[0]][:-3] + data[1]
         return new_url
     else:
-        return "User:", data['name'], "was last seen online", data['lastLoggedIn']
+        return "User " + data['name'], " was last seen online ", data['lastLoggedIn']
 
 
 def tasks(data, oArgs):
@@ -69,3 +76,11 @@ def tasks(data, oArgs):
         out+= "--o--\n"
 
     return out
+
+def getbundles(data, oArgs):
+    return str(data)
+
+
+
+def makebundle(data, oArgs):
+    return str(data)
