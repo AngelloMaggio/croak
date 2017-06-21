@@ -21,6 +21,7 @@ class Croak(Screen):
         self.f_password = StringProperty()
         self.f_host = StringProperty()
         self.f_output = StringProperty()
+        self.f_file = StringProperty()
         self.callType = None
         self.newParams = {}
 
@@ -33,6 +34,7 @@ class Croak(Screen):
         print "Username", self.f_username.text
         print "Password", self.f_password.text
         print "Request", self.f_request.text
+        print "File Selected", self.f_file.path
 
         try:
             print "Params", self.f_params.text
@@ -61,7 +63,7 @@ class Croak(Screen):
                 print myResp
                 self.f_output.text = getfuncs[req[0]](myResp.json(), req[1:])
             except Exception as e:
-                print "Request", req[0], "could not be comprehended"
+                print "Request " + req[0] + " could not be comprehended"
                 print e
 
         elif self.callType == "POST":
@@ -71,14 +73,17 @@ class Croak(Screen):
 
                 if url_req[-3:]=='INC':
                     url_req = url + postfuncs[req[0]](req, 'INC')
-
+                try:
+                    files={'file': open(self.f_file.path, 'rb')}
+                except:
+                    files={}
                 #print "New url_req", url_req
                 print "Requesting to URL:", url_req
-                myResp = requests.post(url_req,auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams)
+                myResp = requests.post(url_req,auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams, files=files)
 
                 self.f_output.text = postfuncs[req[0]](myResp.json(), req[1:])
             except Exception as e:
-                self.f_output.text = "Request", req[0], "could not be comprehended"
+                self.f_output.text = "Request " + req[0] + " could not be comprehended"
                 print e
 
 
@@ -90,6 +95,11 @@ class Croak(Screen):
 
                 if url_req[-3:]=='INC':
                     url_req = url + putfuncs[req[0]](req, 'INC')
+
+                try:
+                    files={'file': open(self.f_file.path+'/'+self.f_file.selection, 'rb')}
+                except:
+                    files={}
 
                 print "New url_req", url_req
                 print "Requesting to URL:", url_req
