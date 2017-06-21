@@ -23,8 +23,16 @@
             GridLayout:
                 size_hint: .3, 1
                 center_x: root.width * 1 / 4
-                rows: 5
+                rows: 7
                 spacing: 10
+
+                ToggleButton:
+                    group: 'callType'
+                    text: 'GET'
+
+                ToggleButton:
+                    group: 'callType'
+                    text: 'POST'
 
                 Label:
                     text: 'Host:'
@@ -57,16 +65,19 @@
                 TextInput:
                     id: params
                     font_size: 20
-            Label:
-                size_hint: .05, 1
-                text: 'Output:'
-                font_size: 20
-            TextInput:
-                size_hint: .65, 1
-                text: " "
-                font_size: 35
-                id: output
-        Button:
-            text: 'Run!'
-            size_hint: 1,.1
-            on_press: root.runreq()
+                Button:
+                    text: 'Run!'
+                    on_press: root.runreq()
+            BoxLayout:
+                size_hint: .8, 1
+                orientation: 'vertical'
+                Label:
+                    size_hint: 1, .05
+                    text: 'Output:'
+                    font_size: 20
+                TextInput:
+                    size_hint: 1, .95
+                    text: " "
+                    font_size: 35
+                    id: output
+

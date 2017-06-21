@@ -23,10 +23,10 @@ def storage(data, oArgs):
     if oArgs[0] == 'plus':
         bin_sum = data['binariesSummary']
 
-        return "Your Storage Directory is located at" + fs_data['storageDirectory'] + '\n' + \
-            "You have" + fs_data['freeSpace'] + "of free space, \n having used" + fs_data['usedSpace'] + "of the total" + fs_data['totalSpace'] +\
-            "\nYou have" + bin_sum['artifactsCount'] + "artifacts, that use" + bin_sum['artifactsSize'] + 'of your disk.' +\
-            "\nYou have" + bin_sum['binariesCount'] + "binaries, \nthat use" + bin_sum['binariesSize'] + 'of your disk.'
+        return "Your Storage Directory is located at " + fs_data['storageDirectory'] + '\n' + \
+            "You have " + fs_data['freeSpace'] + " of free space, \n having used " + fs_data['usedSpace'] + " of the total " + fs_data['totalSpace'] +\
+            "\nYou have" + bin_sum['artifactsCount'] + " artifacts, that use " + bin_sum['artifactsSize'] + ' of your disk.' +\
+            "\nYou have" + bin_sum['binariesCount'] + " binaries, \nthat use " + bin_sum['binariesSize'] + 'of your disk.'
     else:
         return "Your Storage Directory is located at" + fs_data['storageDirectory'] + '\n' + \
              "You have" + fs_data['freeSpace'] + "of free space, having used" + fs_data['usedSpace'] + "of the total" + fs_data['totalSpace']
