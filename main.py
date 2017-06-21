@@ -4,10 +4,13 @@ from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
 from kivy.properties import NumericProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
-from artifactoryreqs import reqsget, getfuncs, reqspost, postfuncs
+from getreqs import reqsget, getfuncs
+from postreqs import reqspost, postfuncs
+from putreqs import reqsput, putfuncs
 import requests
 from kivy.uix.togglebutton import ToggleButton as TB
 import json
+from kivy.uix.dropdown import DropDown
 
 class Croak(Screen):
 
@@ -19,6 +22,7 @@ class Croak(Screen):
         self.f_host = StringProperty()
         self.f_output = StringProperty()
         self.callType = None
+        self.newParams = {}
 
     def runreq(self):
         tb = next( (t for t in TB.get_widgets('callType') if t.state=='down'), None)
@@ -30,10 +34,9 @@ class Croak(Screen):
         print "Password", self.f_password.text
         print "Request", self.f_request.text
 
-        self.f_output.text = "Output goes here"
         try:
             print "Params", self.f_params.text
-            self.f_params = json.loads(self.f_params.text)
+            self.newParams = json.loads(self.f_params.text)
         except Exception as e:
             print "params err"
             print e
@@ -41,6 +44,9 @@ class Croak(Screen):
         req.append(' ')
         url = self.f_host.text
         headers = {'content-type':'application/json'}
+
+
+        print "Everything ready"
 
         if self.callType == "GET":
             try:
@@ -52,7 +58,7 @@ class Croak(Screen):
                 #print "New url_req", url_req
                 print "Requesting to URL:", url_req
                 myResp = requests.get(url_req,auth=(self.f_username.text, self.f_password.text), headers=headers)
-
+                print myResp
                 self.f_output.text = getfuncs[req[0]](myResp.json(), req[1:])
             except Exception as e:
                 print "Request", req[0], "could not be comprehended"
@@ -68,7 +74,7 @@ class Croak(Screen):
 
                 #print "New url_req", url_req
                 print "Requesting to URL:", url_req
-                myResp = requests.post(url_req,auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.f_params)
+                myResp = requests.post(url_req,auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams)
 
                 self.f_output.text = postfuncs[req[0]](myResp.json(), req[1:])
             except Exception as e:
@@ -76,20 +82,36 @@ class Croak(Screen):
                 print e
 
 
+        elif self.callType == "PUT":
+            print "Call type selected is PUT"
+            try:
+                url_req = url + reqsput[req[0]]
+                print url_req
+
+                if url_req[-3:]=='INC':
+                    url_req = url + putfuncs[req[0]](req, 'INC')
+
+                print "New url_req", url_req
+                print "Requesting to URL:", url_req
+                myResp = requests.put(url_req, auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams)
+
+                self.f_output.text = putfuncs[req[0]](myResp.json(), req[1:])
+
+            except Exception as e:
+                self.f_output.text = "Request " + req[0] + " could not be comprehended - " + str(e)
+
+
+
         else:
-            self.f_output.text =  "Select Call type GET/POST"
+            self.f_output.text =  "Select Call type GET/POST/PUT/DEL"
 
 
 class CroakApp(App):
 
     def build(self):
 
-
         croak = Croak()
 
-        #text_input = TextInput(text="Enter request:")
-
-        #croak.add_widget(text_input)
         return croak
 
 

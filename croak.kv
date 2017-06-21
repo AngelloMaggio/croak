@@ -1,5 +1,6 @@
 #:kivy 1.0.9
 
+
 <Croak>:
 
     f_request: request
@@ -23,16 +24,28 @@
             GridLayout:
                 size_hint: .3, 1
                 center_x: root.width * 1 / 4
-                rows: 7
+                rows: 8
                 spacing: 10
 
                 ToggleButton:
+                    size_hint: .33, 1
                     group: 'callType'
                     text: 'GET'
 
                 ToggleButton:
+                    size_hint: .33, 1
                     group: 'callType'
                     text: 'POST'
+
+                ToggleButton:
+                    size_hint: .33, 1
+                    group: 'callType'
+                    text: 'PUT'
+
+                ToggleButton:
+                    size_hint: .33, 1
+                    group: 'callType'
+                    text: 'DEL'
 
                 Label:
                     text: 'Host:'

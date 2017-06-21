@@ -3,7 +3,8 @@ reqsget = {'repos': 'api/repositories',
         'tasks': 'api/tasks',
         'replication': 'api/replications/INC',
         'user': 'api/security/users/INC',
-        'getbundles': 'api/support/bundles'
+        'listbundles': 'api/support/bundles',
+        'getbundle': 'api/support/bundles/INC'
            }
 
 getfuncs = {'repos': lambda x, y: repos(x, y),
@@ -11,13 +12,10 @@ getfuncs = {'repos': lambda x, y: repos(x, y),
             'tasks': lambda x, y: tasks(x, y),
             'replication': lambda x, y: replication(x, y),
             'user': lambda x, y: user(x, y),
-            'getbundles': lambda x, y: getbundles(x,y)
+            'listbundles': lambda x, y: listbundles(x,y),
+            'getbundle': lambda x, y: getbundle(x, y)
 
             }
-
-reqspost = {'makebundle': 'api/support/bundles'}
-
-postfuncs = {'makebundle': lambda x, y: makebundle(x, y)}
 
 def repos(data, oArgs):
     out = ''
@@ -77,10 +75,16 @@ def tasks(data, oArgs):
 
     return out
 
-def getbundles(data, oArgs):
+def listbundles(data, oArgs):
     return str(data)
 
+def getbundle(data, oArgs):
+    if oArgs == 'INC':
+        new_url = reqsget[data[0]][:-3] + data[1]
+        return new_url
+    else:
+        return str(data)
 
 
-def makebundle(data, oArgs):
-    return str(data)
+
+
