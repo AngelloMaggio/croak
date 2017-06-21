@@ -1,0 +1,72 @@
+#:kivy 1.0.9
+
+<Croak>:
+
+    f_request: request
+    f_params: params
+    f_username: username
+    f_password: password
+    f_host: host
+    f_output: output
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint: 1, .1
+            font_size: 30
+            center_x: root.width * 2 / 4
+
+            text: "Croak - Artifactory API Tester"
+        BoxLayout:
+            size_hint: 1, .8
+            orientation: 'horizontal'
+            GridLayout:
+                size_hint: .3, 1
+                center_x: root.width * 1 / 4
+                rows: 5
+                spacing: 10
+
+                Label:
+                    text: 'Host:'
+                    font_size: 20
+                TextInput:
+                    id: host
+                    font_size: 20
+                Label:
+                    text: 'Username:'
+                    font_size: 20
+                TextInput:
+                    id: username
+                    font_size: 20
+                Label:
+                    text: 'Password:'
+                    font_size: 20
+                TextInput:
+                    id: password
+                    font_size: 20
+                    password: True
+                Label:
+                    text: 'Request:'
+                    font_size: 20
+                TextInput:
+                    id: request
+                    font_size: 20
+                Label:
+                    text: 'Parameters:'
+                    font_size: 20
+                TextInput:
+                    id: params
+                    font_size: 20
+            Label:
+                size_hint: .05, 1
+                text: 'Output:'
+                font_size: 20
+            TextInput:
+                size_hint: .65, 1
+                text: " "
+                font_size: 35
+                id: output
+        Button:
+            text: 'Run!'
+            size_hint: 1,.1
+            on_press: root.runreq()
