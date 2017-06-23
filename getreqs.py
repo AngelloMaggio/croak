@@ -4,7 +4,8 @@ reqsget = {'repos': 'api/repositories',
         'replication': 'api/replications/INC',
         'user': 'api/security/users/INC',
         'listbundles': 'api/support/bundles',
-        'getbundle': 'api/support/bundles/INC'
+        'getbundle': 'api/support/bundles/INC',
+        'license': 'api/system/license'
            }
 
 getfuncs = {'repos': lambda x, y: repos(x, y),
@@ -13,9 +14,17 @@ getfuncs = {'repos': lambda x, y: repos(x, y),
             'replication': lambda x, y: replication(x, y),
             'user': lambda x, y: user(x, y),
             'listbundles': lambda x, y: listbundles(x,y),
-            'getbundle': lambda x, y: getbundle(x, y)
+            'getbundle': lambda x, y: getbundle(x, y),
+            'license': lambda  x,y : license(x,y)
 
             }
+
+def license(data, oArgs):
+    out = ''
+    out += '\n' + data['type']
+    out += '\n' + data['validThrough']
+    out += '\n' + data['licensedTo']
+    return out
 
 def repos(data, oArgs):
     out = ''
