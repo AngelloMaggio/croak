@@ -4,7 +4,7 @@
 
 # TO-DO
 
-⋅⋅* PopUp FileChooser
-⋅⋅* Drop down menu to select calls based on dictionaries 
-⋅⋅* Create system to handle copy-to and move-to operations 
-⋅⋅* Comment the damn code 
+1. PopUp FileChooser
+2. Drop down menu to select calls based on dictionaries 
+3. Create system to handle copy-to and move-to operations 
+4. Comment the damn code 
