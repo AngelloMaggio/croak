@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ce8585e-40d5-450a-8b91-bbe352db5eb4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/croak.iml" afterPath="$PROJECT_DIR$/.idea/croak.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/croak.kv" afterPath="$PROJECT_DIR$/croak.kv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/getreqs.py" afterPath="$PROJECT_DIR$/getreqs.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -316,6 +313,14 @@
       <option name="presentableId" value="Default" />
       <updated>1498163056957</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added License Feature">
+      <created>1498243901336</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1498243901336</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -344,6 +349,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added License Feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added License Feature" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
