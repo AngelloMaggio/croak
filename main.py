@@ -1,4 +1,3 @@
-
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
@@ -103,15 +102,11 @@ class Croak(Screen):
                     url_req = url + putfuncs[req[0]](req, 'INC')
 
 
-                if self.f_file.text == "":
-                    files = None
-                    print "File is None"
 
-                else:
-                    try:
-                        files={'file': open(self.f_file.text, 'rb')}
-                    except:
-                        files={}
+                try:
+                    files={'file': open(self.f_file.text, 'rb')}
+                except:
+                    files={}
                 if self.newParams == {}:
                     self.newParams = None
                 print "New url_req", url_req

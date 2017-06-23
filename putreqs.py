@@ -1,7 +1,6 @@
 reqsput = {'create':'INC'}
 
-putfuncs = {'mkdir': lambda x, y: create(x, y),
-            'deploy': lambda x, y: create(x, y)}
+putfuncs = {'create': lambda x, y: create(x, y)}
 
 def create(data, oArgs):
     print "inside create function"
