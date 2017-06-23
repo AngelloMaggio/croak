@@ -34,7 +34,7 @@ class Croak(Screen):
         print "Username", self.f_username.text
         print "Password", self.f_password.text
         print "Request", self.f_request.text
-        print "File Selected", self.f_file.path
+        print "File Selected", self.f_file.text
 
         try:
             print "Params", self.f_params.text
@@ -73,12 +73,17 @@ class Croak(Screen):
 
                 if url_req[-3:]=='INC':
                     url_req = url + postfuncs[req[0]](req, 'INC')
-                try:
-                    files={'file': open(self.f_file.path, 'rb')}
-                except:
-                    files={}
+                if self.f_file.text != '':
+                    try:
+                        files={'file': open(self.f_file.text, 'rb')}
+                    except:
+                        files={}
+                else:
+                    files=None
+
                 #print "New url_req", url_req
                 print "Requesting to URL:", url_req
+
                 myResp = requests.post(url_req,auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams, files=files)
 
                 self.f_output.text = postfuncs[req[0]](myResp.json(), req[1:])
@@ -94,16 +99,24 @@ class Croak(Screen):
                 print url_req
 
                 if url_req[-3:]=='INC':
+                    print "URL is INC"
                     url_req = url + putfuncs[req[0]](req, 'INC')
 
-                try:
-                    files={'file': open(self.f_file.path+'/'+self.f_file.selection, 'rb')}
-                except:
-                    files={}
 
+                if self.f_file.text == "":
+                    files = None
+                    print "File is None"
+
+                else:
+                    try:
+                        files={'file': open(self.f_file.text, 'rb')}
+                    except:
+                        files={}
+                if self.newParams == {}:
+                    self.newParams = None
                 print "New url_req", url_req
                 print "Requesting to URL:", url_req
-                myResp = requests.put(url_req, auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams)
+                myResp = requests.put(url_req, auth=(self.f_username.text, self.f_password.text), headers=headers, json=self.newParams, files=files)
 
                 self.f_output.text = putfuncs[req[0]](myResp.json(), req[1:])
 
