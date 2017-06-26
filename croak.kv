@@ -1,5 +1,11 @@
-#:kivy 1.0.9
 
+<CustomDropDown>:
+    Button:
+        text: 'My first Item'
+        on_release: root.select('item1')
+    Button:
+        text: 'My second Item'
+        on_release: root.select('item2')
 
 <Croak>:
 
@@ -10,6 +16,7 @@
     f_host: host
     f_output: output
     f_file: filechooser
+    spinnerbox: spinnerBox
 
     BoxLayout:
         orientation: 'vertical'
@@ -89,6 +96,9 @@
                 Button:
                     text: 'Run!'
                     on_press: root.runreq()
+                BoxLayout:
+                    id: spinnerBox
+                    text: "Test"
 
 
             BoxLayout:

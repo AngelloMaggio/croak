@@ -1,7 +1,5 @@
 from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.uix.textinput import TextInput
-from kivy.properties import NumericProperty, StringProperty
+from kivy.properties import NumericProperty, StringProperty, ObjectProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 from getreqs import reqsget, getfuncs
 from postreqs import reqspost, postfuncs
@@ -10,10 +8,15 @@ import requests
 from kivy.uix.togglebutton import ToggleButton as TB
 import json
 from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
+from kivy.uix.spinner import Spinner
 
 class Croak(Screen):
 
     def build(self):
+
+
+
         self.f_request = StringProperty()
         self.f_params = StringProperty()
         self.f_username = StringProperty()
@@ -23,6 +26,25 @@ class Croak(Screen):
         self.f_file = StringProperty()
         self.callType = None
         self.newParams = {}
+        self.spinnerbox = ObjectProperty()
+
+        spinner = Spinner(
+            # default value shown
+            text='Home',
+            # available values
+            values=('Home', 'Work', 'Other', 'Custom'),
+            # just for positioning in our example
+            size_hint=(None, None),
+            size=(100, 44),
+            pos_hint={'center_x': .5, 'center_y': .5})
+
+        def show_selected_value(spinner, text):
+            print('The spinner', spinner, 'have text', text)
+
+        spinner.bind(text=show_selected_value)
+
+        self.spinnerbox.add_widget(spinner)
+
 
     def runreq(self):
         tb = next( (t for t in TB.get_widgets('callType') if t.state=='down'), None)
@@ -132,6 +154,8 @@ class CroakApp(App):
 
         return croak
 
+class CustomDropDown(DropDown):
+    pass
 
 
 

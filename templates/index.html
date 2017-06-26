@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+   <body>
+      <form action="/action" method="POST">
+
+         <input type="radio" name="reqtype" value="POST" checked> Post<br>
+         <input type="radio" name="reqtype" value="GET"> Get<br>
+         <input type="radio" name="reqtype" value="PUT"> Put <br>
+         <input type="radio" name="reqtype" value="DEL"> Del<br>
+
+         Host:<br>
+         <input type="text" name="host"><br>
+         Username:<br>
+         <input type="text" name="username"><br>
+         Password:<br>
+         <input type="text" name="password"><br>
+         Request:<br>
+         <input type="text" name="request"><br>
+         Parameter:<br>
+         <input type="text" name="parameters"><br>
+         File:<br>
+         <input type="text" name="file"><br><br>
+
+         <input type="submit" value="Submit"> <br>
+
+      </form>
+
+   {{result}}
+
+
+   </body>
+</html>
