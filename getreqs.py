@@ -68,13 +68,9 @@ def replication(data, oArgs):
     else:
         out = ''
         for item in data:
-<<<<<<< HEAD
-            out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '\n'
-=======
 
             out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '<br>'
 
->>>>>>> 76b01065a7a69717425ae0071b1178bff41521bf
             if oArgs[1] == 'plus':
                 out += '<br>' "Sync Statistics: " + item['syncStatistics'] + " Sync Deletes:" + \
                        item['syncDeletes'] + "Timeout: " + item['socketTimeoutMillis']
@@ -93,15 +89,10 @@ def user(data, oArgs):    #List the Users
 def tasks(data, oArgs):  #List the Background Tasks
     out = ''
     for task in data['tasks']:
-<<<<<<< HEAD
-        out += task['id'] + ' : ' + task['description'] + '\n'
-        out += task['state'] + 'Type:' + task['type'] + '\n'
-=======
 
         out += task['id'] + ' : ' + task['description'] + '<br>'
         if oArgs[0] == 'plus':
             out += task['state'] + 'Type:' + task['type'] + '<br>'
->>>>>>> 76b01065a7a69717425ae0071b1178bff41521bf
         out+= "--o--\n"
     return out
 

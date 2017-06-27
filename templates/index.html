@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-   <head> 
+   <head>
+       <title>Croak!</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" >
       <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -8,31 +9,57 @@
 
       <script type = "text/javascript" src = "/static/js/bootstrap.min.js"></script>
 
+       <script>
+
+    $(document).ready(function () {
+        $("#type").change(function () {
+            var val = $(this).val();
+            if (val == "GET") {
+
+                $("#request").html("{% for req in request_get %}<option value='{{ req }}'> {{ req }}</option>{% endfor %}");
+
+            } else if (val == "POST") {
+                $("#request").html("{% for req in request_post %}<option value='{{ req }}'> {{ req }}</option>{% endfor %}");
+            } else if (val == "PUT") {
+                $("#request").html("{% for req in request_put %}<option value='{{ req }}'> {{ req }}</option>{% endfor %}");
+            }
+            else if (val == "DELETE") {
+                $("#request").html("<option value='test'>item3: test 1</option><option value='test2'>item3: test 2</option>");
+            }
+        });
+});</script>
+
+
    </head>
 
       <body>
-          <div class="container">
-          <h2> Select Action </h2>
+
+      <div class="modal-body row">
+
+          <h2> Welcome to Croak! </h2>
+          <h3> An Artifactory Testing Tool </h3>
+
+
+          <div class="col-md-6">
+
+
+
         
 
              <form action="/action" method="POST">
              <div class="form-group">
-                 <select class="form-control" name="reqtype">
-                   <option value="POST">Post</option>
-                   <option value="GET"> Get</option>
-                   <option value="PUT"> Put</option>
+            Request:
+             <select id="type" class="form-control" name="reqtype">
+                 <option value="">-- select one -- </option>
+                <option value="GET">Get</option>
+                <option value="POST">Post</option>
+                <option value="PUT">Put</option>
 
+                 <option role="separator" class="divider"></option>
 
-{% autoescape false %}
-   {{result}}
-{% endautoescape %}
+                 <option value="DELETE">Delete</option>
+            </select>
 
-
-                   <option role="separator" class="divider"></option>
-
-
-                   <option  value = "DELETE"> Delete</option>
-                 </select>
                </div>
 
 
@@ -41,13 +68,17 @@
             Username:<br />
             <input type="text" class='form-control' name="username"> <br />
             Password:<br />
-            <input type="text" class='form-control' name="password"> <br />
+            <input type="password" class='form-control' name="password"> <br />
+
+
             Request:<br />
-            <input type="text" class='form-control' name="request"><br />
-            Parameter:<br />
+            <select id="request" class="form-control" name="request">
+                <option value="">-- select one -- </option>
+            </select><br />
+             Parameter:<br />
             <input type="text" class='form-control' name="parameters"> <br />
             File:<br />
-            <input type="text" class='form-control' name="file"> <br /> <br />
+            <input type="file" class='form-control' name="file  "> <br /> <br />
 
             <input class="btn btn-primary" type="submit" value="Submit"> <br>
 
@@ -55,10 +86,17 @@
       
          </form>
 
-         {{result}}
 
+          </div>
+
+
+<div class="col-md-6">
+         {% autoescape false %}
+            {{result}}
+              {% endautoescape %}
+</div>
 
       
-
+          </div>
       </body>
    </html>
