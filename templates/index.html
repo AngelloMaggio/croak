@@ -1,32 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-   <body>
-      <form action="/action" method="POST">
+   <head> 
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" >
+      <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+      <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
-         <input type="radio" name="reqtype" value="POST" checked> Post<br>
-         <input type="radio" name="reqtype" value="GET"> Get<br>
-         <input type="radio" name="reqtype" value="PUT"> Put <br>
-         <input type="radio" name="reqtype" value="DEL"> Del<br>
+      <script type = "text/javascript" src = "/static/js/bootstrap.min.js"></script>
 
-         Host:<br>
-         <input type="text" name="host"><br>
-         Username:<br>
-         <input type="text" name="username"><br>
-         Password:<br>
-         <input type="text" name="password"><br>
-         Request:<br>
-         <input type="text" name="request"><br>
-         Parameter:<br>
-         <input type="text" name="parameters"><br>
-         File:<br>
-         <input type="text" name="file"><br><br>
+   </head>
 
-         <input type="submit" value="Submit"> <br>
+      <body>
+          <div class="container">
+          <h2> Select Action </h2>
+        
 
-      </form>
+             <form action="/action" method="POST">
+             <div class="form-group">
+                 <select class="form-control" name="reqtype">
+                   <option value="POST">Post</option>
+                   <option value="GET"> Get</option>
+                   <option value="PUT"> Put</option>
 
+
+{% autoescape false %}
    {{result}}
+{% endautoescape %}
 
 
-   </body>
-</html>
+                   <option role="separator" class="divider"></option>
+
+
+                   <option  value = "DELETE"> Delete</option>
+                 </select>
+               </div>
+
+
+            Host:<br />
+            <input type="text" class='form-control' name="host"> <br />
+            Username:<br />
+            <input type="text" class='form-control' name="username"> <br />
+            Password:<br />
+            <input type="text" class='form-control' name="password"> <br />
+            Request:<br />
+            <input type="text" class='form-control' name="request"><br />
+            Parameter:<br />
+            <input type="text" class='form-control' name="parameters"> <br />
+            File:<br />
+            <input type="text" class='form-control' name="file"> <br /> <br />
+
+            <input class="btn btn-primary" type="submit" value="Submit"> <br>
+
+
+      
+         </form>
+
+         {{result}}
+
+
+      
+
+      </body>
+   </html>
