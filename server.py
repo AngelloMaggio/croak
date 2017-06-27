@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_bootstrap import Bootstrap
+
 import postreqs, putreqs, getreqs
 import requests
 
@@ -12,16 +14,20 @@ def hello_world(result="Waiting for submit"):
 
 @app.route('/action', methods=['POST', 'GET'])
 def action():
+
     if request.method == 'POST':
         print "Post method"
-        result = request.form
 
+        result = request.form
+        print "Result:", 
         url = request.form['host']
         req = request.form['request'].lower().split(' ')
         headers = {'content-type':'application/json'}
+        print "Variables set"
 
         if request.form['reqtype'] == "POST":
-            pass
+            print "It is post"
+            result = "Test"
         elif request.form['reqtype'] == "GET":
 
             try:
