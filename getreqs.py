@@ -5,7 +5,8 @@ reqsget = {'repos': 'api/repositories',
         'user': 'api/security/users/INC',
         'listbundles': 'api/support/bundles',
         'getbundle': 'api/support/bundles/INC',
-        'license': 'api/system/license'
+        'license': 'api/system/license',
+        'build': 'api/build'
            }
 
 getfuncs = {'repos': lambda x, y: repos(x, y),
@@ -15,23 +16,36 @@ getfuncs = {'repos': lambda x, y: repos(x, y),
             'user': lambda x, y: user(x, y),
             'listbundles': lambda x, y: listbundles(x,y),
             'getbundle': lambda x, y: getbundle(x, y),
-            'license': lambda  x,y : license(x,y)
-
+            'license': lambda  x,y : license(x,y),
+            'build' : lambda  x,y : build(x,y)
             }
 
-def license(data, oArgs):
+def build(data, oArgs):
+    out = ''
+    if data['errors'] != '':
+        for item in data['errors']:
+            out += '\n' + str(item['status'])
+    elif data['builds'] != '':
+        for item in data['builds']:
+            out += '\n' + 'Uri:' + item['uri'] + 'last Started :' + item['lastStarted']
+    return out
+
+
+
+
+def license(data, oArgs):   #Check License
     out = ''
     out += '<br>' + data['type']
     out += '<br>' + data['validThrough']
     out += '<br>' + data['licensedTo']
     return out
 
-def repos(data, oArgs):
+def repos(data, oArgs):     #Check Repos
     out = ''
     for item in data:
         out += "<br />" + item['key']
     return out
-def storage(data, oArgs):
+def storage(data, oArgs):   #Check Storage of the Instance
     fs_data = data['fileStoreSummary']
 
     if oArgs[0] == 'plus':
@@ -54,9 +68,13 @@ def replication(data, oArgs):
     else:
         out = ''
         for item in data:
+<<<<<<< HEAD
+            out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '\n'
+=======
 
             out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '<br>'
 
+>>>>>>> 76b01065a7a69717425ae0071b1178bff41521bf
             if oArgs[1] == 'plus':
                 out += '<br>' "Sync Statistics: " + item['syncStatistics'] + " Sync Deletes:" + \
                        item['syncDeletes'] + "Timeout: " + item['socketTimeoutMillis']
@@ -64,7 +82,7 @@ def replication(data, oArgs):
         return out
 
 
-def user(data, oArgs):
+def user(data, oArgs):    #List the Users
     if oArgs == 'INC':
         new_url = reqsget[data[0]][:-3] + data[1]
         return new_url
@@ -72,16 +90,19 @@ def user(data, oArgs):
         return "User " + data['name'], " was last seen online ", data['lastLoggedIn']
 
 
-def tasks(data, oArgs):
-
+def tasks(data, oArgs):  #List the Background Tasks
     out = ''
     for task in data['tasks']:
+<<<<<<< HEAD
+        out += task['id'] + ' : ' + task['description'] + '\n'
+        out += task['state'] + 'Type:' + task['type'] + '\n'
+=======
 
         out += task['id'] + ' : ' + task['description'] + '<br>'
         if oArgs[0] == 'plus':
             out += task['state'] + 'Type:' + task['type'] + '<br>'
+>>>>>>> 76b01065a7a69717425ae0071b1178bff41521bf
         out+= "--o--\n"
-
     return out
 
 def listbundles(data, oArgs):
