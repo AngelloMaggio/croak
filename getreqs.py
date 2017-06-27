@@ -21,15 +21,15 @@ getfuncs = {'repos': lambda x, y: repos(x, y),
 
 def license(data, oArgs):
     out = ''
-    out += '\n' + data['type']
-    out += '\n' + data['validThrough']
-    out += '\n' + data['licensedTo']
+    out += '<br>' + data['type']
+    out += '<br>' + data['validThrough']
+    out += '<br>' + data['licensedTo']
     return out
 
 def repos(data, oArgs):
     out = ''
     for item in data:
-        out += '\n' + item['key']
+        out += "<br />" + item['key']
     return out
 def storage(data, oArgs):
     fs_data = data['fileStoreSummary']
@@ -37,12 +37,12 @@ def storage(data, oArgs):
     if oArgs[0] == 'plus':
         bin_sum = data['binariesSummary']
 
-        return "Your Storage Directory is located at " + fs_data['storageDirectory'] + '\n' + \
+        return "Your Storage Directory is located at " + fs_data['storageDirectory'] + '<br>' + \
             "You have " + fs_data['freeSpace'] + " of free space, \n having used " + fs_data['usedSpace'] + " of the total " + fs_data['totalSpace'] +\
             "\nYou have" + bin_sum['artifactsCount'] + " artifacts, that use " + bin_sum['artifactsSize'] + ' of your disk.' +\
             "\nYou have" + bin_sum['binariesCount'] + " binaries, \nthat use " + bin_sum['binariesSize'] + 'of your disk.'
     else:
-        return "Your Storage Directory is located at" + fs_data['storageDirectory'] + '\n' + \
+        return "Your Storage Directory is located at" + fs_data['storageDirectory'] + '<br>' + \
              "You have" + fs_data['freeSpace'] + "of free space, having used" + fs_data['usedSpace'] + "of the total" + fs_data['totalSpace']
 
 
@@ -55,12 +55,12 @@ def replication(data, oArgs):
         out = ''
         for item in data:
 
-            out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '\n'
+            out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '<br>'
 
             if oArgs[1] == 'plus':
-                out += '\n' "Sync Statistics: " + item['syncStatistics'] + " Sync Deletes:" + \
+                out += '<br>' "Sync Statistics: " + item['syncStatistics'] + " Sync Deletes:" + \
                        item['syncDeletes'] + "Timeout: " + item['socketTimeoutMillis']
-                out += '\n'
+                out += '<br>'
         return out
 
 
@@ -77,9 +77,9 @@ def tasks(data, oArgs):
     out = ''
     for task in data['tasks']:
 
-        out += task['id'] + ' : ' + task['description'] + '\n'
+        out += task['id'] + ' : ' + task['description'] + '<br>'
         if oArgs[0] == 'plus':
-            out += task['state'] + 'Type:' + task['type'] + '\n'
+            out += task['state'] + 'Type:' + task['type'] + '<br>'
         out+= "--o--\n"
 
     return out
