@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_bootstrap import Bootstrap
 
 import postreqs, putreqs, getreqs
@@ -9,7 +9,8 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world(result="Waiting for submit"):
     name = "test"
-    return render_template("index.html", result=result)
+    return render_template("index.html", result=result, request_get=getreqs.reqsget.keys(),\
+                           request_post=postreqs.reqspost.keys(), request_put=putreqs.reqsput.keys())
 
 
 @app.route('/action', methods=['POST', 'GET'])
@@ -50,7 +51,8 @@ def action():
         elif request.form['reqtype'] == "DEL":
             pass
 
-        return render_template("index.html", result=result)
+        return render_template("index.html", result=result, request_get=getreqs.reqsget.keys(),\
+                           request_post=postreqs.reqspost.keys(), request_put=putreqs.reqsput.keys())
 
 
 
