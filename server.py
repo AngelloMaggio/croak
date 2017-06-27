@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import postreqs, putreqs, getreqs
+import postreqs, putreqs, getreqs, DeleteReqs
 import requests
 
 app = Flask(__name__)
@@ -42,7 +42,20 @@ def action():
         elif request.form['reqtype'] == "PUT":
             pass
         elif request.form['reqtype'] == "DEL":
-            pass
+            try:
+                url_req = url + DeleteReqs.deletefuncs[req[0]]
+                print 'inside try block'
+                if url_req[-3:] == 'INC':
+                    url_req = url + DeleteReqs.deletefuncs[req[0]](req, 'INC')
+
+                print "New url_req", url_req
+                print "Requesting to URL:", url_req
+                myResp = requests.delete(url_req, auth=(request.form['username'], request.form['password']), headers=headers)
+                print myResp
+                result = DeleteReqs.deletefuncs[req[0]](myResp.json(), req[1:])
+            except Exception as e:
+                print "Request " + req[0] + " could not be comprehended"
+                print e
 
         return render_template("index.html", result=result)
 
