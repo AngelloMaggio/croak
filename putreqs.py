@@ -1,11 +1,17 @@
 reqsput = {'create':'INC'}
 
-putfuncs = {'create': lambda x, y: create(x, y)}
+putfuncs = {'create': lambda x, y, z: create(x, y, z)}
 
-def create(data, oArgs):
+def create(data, oArgs, inc):
     print "inside create function"
-    if oArgs == 'INC':
-        new_url = reqsput[data[0]][:-3] + data[1] + '/' + data[2]
+
+    if inc:
+        args = oArgs.split(' ')
+        new_url = reqsput[data[0]][:-3]
+        for i in args:
+            new_url +=  i + '/'
+            print new_url
+        new_url=new_url[:-1]
         return new_url
     else:
         return str(data)

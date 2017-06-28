@@ -20,6 +20,7 @@ getfuncs = {'repos': lambda x, y: repos(x, y),
             'build' : lambda  x,y : build(x,y)
             }
 
+
 def build(data, oArgs):
     out = ''
     if data['errors'] != '':
