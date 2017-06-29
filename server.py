@@ -34,28 +34,23 @@ def action():
         filename = request.form['file']
 
         # Headers indicate we are dealing with json data
-        headers = {'content-type':'application/json'}
+        headers = {'content-type': 'application/json'}
 
         # This checks for the request type selected in the form
         if request.form['reqtype'] == "POST":
-            print "It's a post function"
-            print params
+
             try:
 
                 url_req = url + postreqs.post_requests[req[0]]
-                print "got url", url_req
 
-                if url_req[-3:]=='INC':
-                    print "url is incomplete"
+                if url_req[-3:] == 'INC':
                     url_req = url + postreqs.post_functions[req[0]](req, params, True)
-                    print "new url is", url_req
 
-                print "Requesting to URL:", url_req
-                myResp = requests.post(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
-                print myResp
-                result = postreqs.post_functions[req[0]](myResp.json(), req[1:], False)
+                request_response = requests.post(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
+                result = request_response.json()
+
             except Exception as e:
-                print "Request " + req[0] + " could not be comprehended"
+                print "Error has been raised:"
                 print e
 
         # If request type selected is GET
@@ -64,40 +59,35 @@ def action():
             try:
                 url_req = url + getreqs.get_requests[req[0]]
 
-                if url_req[-3:]=='INC':
+                if url_req[-3:] == 'INC':
 
                     url_req = url + getreqs.get_functions[req[0]](req, params, True)
 
-                myResp = requests.get(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
+                request_response = requests.get(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
 
-                result = getreqs.get_functions[req[0]](myResp.json(), req[1:], False)
+                result = request_response.json()
 
             except Exception as e:
                 print "Request " + req[0] + " could not be comprehended"
                 print e
 
         elif request.form['reqtype'] == "PUT":
-            print "It's a put function"
-            print params
+
             try:
 
                 url_req = url + putreqs.reqsput[req[0]]
-                print "got url", url_req
 
                 if url_req[-3:]=='INC':
-                    print "url is incomplete"
                     url_req = url + putreqs.putfuncs[req[0]](req, params, True)
-                    print "new url is", url_req
-
-                print "Requesting to URL:", url_req
 
                 if filename != '':
                     files = {'file': open(filename, 'rb')}
                 else:
-                    files={}
-                myResp = requests.put(url_req,auth=(request.form['username'], request.form['password']), headers=headers, files=files)
-                print myResp
-                result = putreqs.putfuncs[req[0]](myResp.json(), req[1:], False)
+                    files = {}
+
+                request_response = requests.put(url_req,auth=(request.form['username'], request.form['password']), headers=headers, files=files)
+                result = request_response.json()
+
             except Exception as e:
                 print "Request " + req[0] + " could not be comprehended"
                 print e
@@ -105,15 +95,12 @@ def action():
         elif request.form['reqtype'] == "DEL":
             try:
                 url_req = url + deletereqs.delete_functions[req[0]]
-                print 'inside try block'
                 if url_req[-3:] == 'INC':
                     url_req = url + deletereqs.delete_functions[req[0]](req, params, True)
 
-                print "New url_req", url_req
-                print "Requesting to URL:", url_req
-                myResp = requests.delete(url_req, auth=(request.form['username'], request.form['password']), headers=headers)
-                print myResp
-                result = deletereqs.delete_functions[req[0]](myResp.json(), params, False)
+                request_response = requests.delete(url_req, auth=(request.form['username'], request.form['password']), headers=headers)
+                result = request_response.json()
+
             except Exception as e:
                 print "Request " + req[0] + " could not be comprehended"
                 print e
