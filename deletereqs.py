@@ -1,16 +1,12 @@
-deletereqs = { 'deleteuser' : 'api/security/users/INC'}
+delete_requests = {'delete_user': 'api/security/users/INC'}
 
-deletefuncs = { 'deleteuser': lambda x,y : deleteuser(x,y)}
+delete_functions = {'delete_user': lambda x, y: delete_user(x, y)}
 
-def deleteuser(data, params):
-    if params == 'INC':
-        new_url = deletereqs[data[0]][:-3] + data[1]
-        print 'here inside delete'
-        return new_url
 
-    else:
-        out = ''
-        out += str(data)
-        return out
+def delete_user(data, params):
+
+    new_url = delete_requests[data[0]][:-3] + data[1]
+    print 'here inside delete'
+    return new_url
 
 

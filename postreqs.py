@@ -1,60 +1,33 @@
-reqspost = {'makebundle': 'api/support/bundles',
-            'optimizestorage' : 'api/system/storage/optimize',
-           'build_promote': 'api/build/promote/INC',
+post_requests = {'make_bundle': 'api/support/bundles',
+            'optimize_storage': 'api/system/storage/optimize',
+            'build_promote': 'api/build/promote/INC',
             'docker_promote': 'api/docker/INC',
             'build_rename': 'api/build/rename/INC'}
 
-postfuncs = {'makebundle': lambda x, y: makebundle(x, y),
-             'optimizestorage' : lambda x, y: optimizestorage(x,y),
-             'build_promote': lambda x,y,z: buildpromote(x,y,z),
-             'docker_promote': lambda x,y,z: dockerpromote(x,y,z),
-             'build_rename': lambda x, y, z: buildrename(x,y,z)}
+post_functions = {'build_promote': lambda x, y: build_promote(x, y),
+                  'docker_promote': lambda x, y: docker_promote(x, y),
+                  'build_rename': lambda x, y: build_rename(x, y)}
 
 
-def buildrename(data, params, inc):
+def build_rename(data, params):
 
-    if inc:
+    args = params.split(' ')
 
-        args = params.split(' ')
+    new_url = post_requests[data[0]][:-3] + '/' + args[0] + '/' + args[1]
 
-        new_url = reqspost[data[0]][:-3] + '/' + args[0] + '/' + args[1]
-
-        return new_url
-    else:
-        out = str(data)
-        return out
+    return new_url
 
 
-def dockerpromote(data, params, inc):
+def docker_promote(data, params):
 
-    if inc:
+    new_url = post_requests[data[0]][:-3] + '/' + params + '/v2/promote'
+
+    return new_url
 
 
+def build_promote(data, params):
 
-        new_url = reqspost[data[0]][:-3] + '/' + params + '/v2/promote'
+    args = params.split(' ')
+    new_url = post_requests[data[0]][:-3] + '/' + args[0] + '/' + args[1]
 
-        return new_url
-
-    else:
-        out = str(data)
-
-        return out
-
-def optimizestorage(data, params, inc):
-    return str(data)
-
-def makebundle(data, params, inc):
-    return str(data)
-
-def buildpromote(data, params, inc):
-
-    if inc:
-        args = params.split(' ')
-        new_url = reqspost[data[0]][:-3] + '/' + args[0] + '/' + args[1]
-
-        return new_url
-
-    else:
-        out = str(data)
-
-    return out
+    return new_url
