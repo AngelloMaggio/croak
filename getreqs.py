@@ -17,7 +17,7 @@ getfuncs = {'repos': lambda x, y, z: repos(x, y, z),
             'listbundles': lambda x, y, z: listbundles(x,y,z),
             'getbundle': lambda x, y, z: getbundle(x, y, z),
             'license': lambda  x,y,z : license(x,y,z),
-            'build' : lambda  x,y,z : build(x,y,z)
+            'build' : lambda  x,y,z : build(x,y,z),
             }
 
 
@@ -32,7 +32,7 @@ def build(data, params, inc):
 
         new_url = reqsget[data[0]][:-3]
         for i in args:
-            new_url +=  i + '/'
+            new_url += i + '/'
             print new_url
         new_url=new_url[:-1]
         return new_url
@@ -47,6 +47,7 @@ def build(data, params, inc):
                 out += '<br \>' + 'Uri:' + item['uri'] + 'last Started :' + item['lastStarted']
 
     return out
+
 
 
 def license(data, params, inc):   #Check License
