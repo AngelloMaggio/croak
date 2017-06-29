@@ -44,7 +44,7 @@ def action():
                 url_req = url + postreqs.post_requests[req[0]]
 
                 if url_req[-3:] == 'INC':
-                    url_req = url + postreqs.post_functions[req[0]](req, params, True)
+                    url_req = url + postreqs.post_functions[req[0]](req, params)
 
                 request_response = requests.post(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
                 result = request_response.json()
@@ -61,7 +61,7 @@ def action():
 
                 if url_req[-3:] == 'INC':
 
-                    url_req = url + getreqs.get_functions[req[0]](req, params, True)
+                    url_req = url + getreqs.get_functions[req[0]](req, params)
 
                 request_response = requests.get(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
 
@@ -78,7 +78,7 @@ def action():
                 url_req = url + putreqs.reqsput[req[0]]
 
                 if url_req[-3:]=='INC':
-                    url_req = url + putreqs.putfuncs[req[0]](req, params, True)
+                    url_req = url + putreqs.putfuncs[req[0]](req, params)
 
                 if filename != '':
                     files = {'file': open(filename, 'rb')}
@@ -96,7 +96,7 @@ def action():
             try:
                 url_req = url + deletereqs.delete_functions[req[0]]
                 if url_req[-3:] == 'INC':
-                    url_req = url + deletereqs.delete_functions[req[0]](req, params, True)
+                    url_req = url + deletereqs.delete_functions[req[0]](req, params)
 
                 request_response = requests.delete(url_req, auth=(request.form['username'], request.form['password']), headers=headers)
                 result = request_response.json()
