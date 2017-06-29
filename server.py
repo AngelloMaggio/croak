@@ -45,18 +45,21 @@ def action():
         if request.form['reqtype'] == "POST":
 
             try:
-
                 url_req = url + postreqs.post_requests[req[0]]
-
+            except Exception as e:
+                print "Error during URL formatting function"
+                print "Error:", e
+            try:
                 if url_req[-3:] == 'INC':
                     url_req = url + postreqs.post_functions[req[0]](req, params)
-
-                request_response = requests.post(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
-                result = request_response.json()
-
             except Exception as e:
-                print "Error has been raised:"
-                print e
+                print "Error during URL formatting function"
+                print "Error:", e
+            try:
+                request_response = requests.post(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
+            except Exception as e:
+                print "Error during post request"
+                print "Error:", e
 
         # If request type selected is GET
         elif request.form['reqtype'] == "GET":
@@ -77,11 +80,6 @@ def action():
                 print "Error while making API request"
                 print "Error:", e
 
-            try:
-                result = request_response.json()
-            except Exception as e:
-                print "Error while trying to make response into json, returning full response in most likely text"
-                result = request_response
 
         elif request.form['reqtype'] == "PUT":
 
@@ -116,13 +114,6 @@ def action():
                 print "Error:", e
                 request_response = ''
 
-            try:
-                result = request_response.json()
-
-            except Exception as e:
-                print "Error while trying to make response into json. It's probably in text. Returning full response."
-                result = request_response
-
         elif request.form['reqtype'] == "DEL":
 
             try:
@@ -146,12 +137,15 @@ def action():
                 print "Error:", e
                 request_response = ''
 
-            try:
-                result = request_response.json()
+        try:
+            result = request_response.json()
 
-            except Exception as e:
-                print "Error while trying to make response into json. Returning full response."
-                result = request_response
+        except Exception as e:
+            print "Error while trying to make response into json. Returning full response."
+            result = request_response
+
+
+
 
         return render_template("index.html", result=result, request_get=getreqs.get_requests.keys(), \
                                request_post=postreqs.post_requests.keys(), request_put=putreqs.reqsput.keys())
