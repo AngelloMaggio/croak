@@ -2,8 +2,9 @@
 <html>
    <head>
        <title>Croak!</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=0.8">
       <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" >
+      <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/main.css') }}" >
       <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
       <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
@@ -35,10 +36,10 @@
 
         $("#button-submit").hover(function(){
             {% for key in result %}
-               myResults.push({{key}});
-               $('.result-info').html(myResults[0]);
 
-            {% endfor %}
+
+
+            {% endfor %}  
 
 
           })
@@ -107,13 +108,14 @@
           </div>
 
 
-<div class="col-md-6">
-   <div class="result-info">
-         {% autoescape false %}
-            {{result}}
-              {% endautoescape %}
-   </div>
-</div>
+            <div class="col-md-6">
+               <div class="jumbotron result-info text-center">
+                  <div class="container">
+                     {% autoescape false %}
+                          {% endautoescape %}
+                  </div>
+               </div>
+            </div>
 
       
           </div>
