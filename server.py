@@ -79,6 +79,7 @@ def action():
             except Exception as e:
                 print "Error while making API request"
                 print "Error:", e
+                request_response = ''
 
 
         elif request.form['reqtype'] == "PUT":
