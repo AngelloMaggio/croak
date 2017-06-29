@@ -138,6 +138,9 @@ def action():
                 print "Error:", e
                 request_response = ''
 
+        else:
+            request_response = "No Request Type Selected"
+
         try:
             result = request_response.json()
 
