@@ -6,8 +6,8 @@ postfuncs = {'makebundle': lambda x, y: makebundle(x, y),
 
 
 
-def optimizestorage(data, oArgs):
+def optimizestorage(data, params, inc):
     return str(data)
 
-def makebundle(data, oArgs):
+def makebundle(data, params, inc):
     return str(data)

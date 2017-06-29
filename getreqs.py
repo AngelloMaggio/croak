@@ -1,69 +1,87 @@
 reqsget = {'repos': 'api/repositories',
-        'storage': 'api/storageinfo',
-        'tasks': 'api/tasks',
-        'replication': 'api/replications/INC',
-        'user': 'api/security/users/INC',
-        'listbundles': 'api/support/bundles',
-        'getbundle': 'api/support/bundles/INC',
-        'license': 'api/system/license',
-        'build': 'api/build'
+           'storage': 'api/storageinfo',
+           'tasks': 'api/tasks',
+           'replication': 'api/replications/INC',
+           'user': 'api/security/users/INC',
+           'listbundles': 'api/support/bundles',
+           'getbundle': 'api/support/bundles/INC',
+           'license': 'api/system/license',
+           'build': 'api/build/INC'
            }
 
-getfuncs = {'repos': lambda x, y: repos(x, y),
-            'storage': lambda x, y: storage(x, y),
-            'tasks': lambda x, y: tasks(x, y),
-            'replication': lambda x, y: replication(x, y),
-            'user': lambda x, y: user(x, y),
-            'listbundles': lambda x, y: listbundles(x,y),
-            'getbundle': lambda x, y: getbundle(x, y),
-            'license': lambda  x,y : license(x,y),
-            'build' : lambda  x,y : build(x,y)
+getfuncs = {'repos': lambda x, y, z: repos(x, y, z),
+            'storage': lambda x, y, z: storage(x, y, z),
+            'tasks': lambda x, y, z: tasks(x, y, z),
+            'replication': lambda x, y, z: replication(x, y, z),
+            'user': lambda x, y, z: user(x, y, z),
+            'listbundles': lambda x, y, z: listbundles(x,y,z),
+            'getbundle': lambda x, y, z: getbundle(x, y, z),
+            'license': lambda  x,y,z : license(x,y,z),
+            'build' : lambda  x,y,z : build(x,y,z)
             }
 
 
-def build(data, oArgs):
-    out = ''
-    if data['errors'] != '':
-        for item in data['errors']:
-            out += '\n' + str(item['status'])
-    elif data['builds'] != '':
-        for item in data['builds']:
-            out += '\n' + 'Uri:' + item['uri'] + 'last Started :' + item['lastStarted']
+# Handles a couple of the build calls since they share a pretty big part of the api URL
+def build(data, params, inc):
+
+    if inc:
+        args = params.split(' ')
+
+        if len(args) == 3:
+            args = args[:-1] + ['?diff=' + args[-1]]
+
+        new_url = reqsget[data[0]][:-3]
+        for i in args:
+            new_url +=  i + '/'
+            print new_url
+        new_url=new_url[:-1]
+        return new_url
+
+    else:
+        out = ''
+        if data['errors'] != '':
+            for item in data['errors']:
+                out += '<br \>' + str(item['status'])
+        elif data['builds'] != '':
+            for item in data['builds']:
+                out += '<br \>' + 'Uri:' + item['uri'] + 'last Started :' + item['lastStarted']
+
     return out
 
 
-
-
-def license(data, oArgs):   #Check License
+def license(data, params, inc):   #Check License
     out = ''
     out += '<br>' + data['type']
     out += '<br>' + data['validThrough']
     out += '<br>' + data['licensedTo']
     return out
 
-def repos(data, oArgs):     #Check Repos
+
+def repos(data, params, inc):     #Check Repos
     out = ''
     for item in data:
         out += "<br />" + item['key']
     return out
-def storage(data, oArgs):   #Check Storage of the Instance
+
+
+def storage(data, params, inc):   #Check Storage of the Instance
+
     fs_data = data['fileStoreSummary']
 
-    if oArgs[0] == 'plus':
-        bin_sum = data['binariesSummary']
+    bin_sum = data['binariesSummary']
 
-        return "Your Storage Directory is located at " + fs_data['storageDirectory'] + '<br>' + \
-            "You have " + fs_data['freeSpace'] + " of free space, \n having used " + fs_data['usedSpace'] + " of the total " + fs_data['totalSpace'] +\
-            "\nYou have" + bin_sum['artifactsCount'] + " artifacts, that use " + bin_sum['artifactsSize'] + ' of your disk.' +\
-            "\nYou have" + bin_sum['binariesCount'] + " binaries, \nthat use " + bin_sum['binariesSize'] + 'of your disk.'
-    else:
-        return "Your Storage Directory is located at" + fs_data['storageDirectory'] + '<br>' + \
-             "You have" + fs_data['freeSpace'] + "of free space, having used" + fs_data['usedSpace'] + "of the total" + fs_data['totalSpace']
+    return "Your Storage Directory is located at " + fs_data['storageDirectory'] + '<br \>' + \
+           "You have " + fs_data['freeSpace'] + " of free space, <br \> having used " + fs_data['usedSpace'] + " of the total " + fs_data['totalSpace'] +\
+           "<br \>You have" + bin_sum['artifactsCount'] + " artifacts, that use " + bin_sum['artifactsSize'] + ' of your disk.' +\
+           "<br \>You have" + bin_sum['binariesCount'] + " binaries, <br \>that use " + bin_sum['binariesSize'] + 'of your disk.' +\
+           "<br \>Your Storage Directory is located at" + fs_data['storageDirectory'] + '<br>' + \
+           "You have" + fs_data['freeSpace'] + "of free space, having used" + fs_data['usedSpace'] + "of the total" + fs_data['totalSpace']
 
 
-def replication(data, oArgs):
-    if oArgs == 'INC':
-        new_url = reqsget[data[0]][:-3] + data[1]
+def replication(data, params, inc):
+
+    if inc:
+        new_url = reqsget[data[0]][:-3] + params
         return new_url
 
     else:
@@ -72,36 +90,38 @@ def replication(data, oArgs):
 
             out += item['repoKey'], 'for user', item['username'], "with cron expression", item['cronExp'] + '<br>'
 
-            if oArgs[1] == 'plus':
+            if params[1] == 'plus':
                 out += '<br>' "Sync Statistics: " + item['syncStatistics'] + " Sync Deletes:" + \
                        item['syncDeletes'] + "Timeout: " + item['socketTimeoutMillis']
                 out += '<br>'
+
         return out
 
 
-def user(data, oArgs):    #List the Users
-    if oArgs == 'INC':
-        new_url = reqsget[data[0]][:-3] + data[1]
+def user(data, params, inc):    #List the Users
+
+    if inc:
+        new_url = reqsget[data[0]][:-3] + params
         return new_url
     else:
         return "User " + data['name'], " was last seen online ", data['lastLoggedIn']
 
 
-def tasks(data, oArgs):  #List the Background Tasks
+def tasks(data, params, inc):  #List the Background Tasks
     out = ''
     for task in data['tasks']:
 
         out += task['id'] + ' : ' + task['description'] + '<br>'
-        if oArgs[0] == 'plus':
+        if params[0] == 'plus':
             out += task['state'] + 'Type:' + task['type'] + '<br>'
         out+= "--o--\n"
     return out
 
-def listbundles(data, oArgs):
+def listbundles(data, params, inc):
     return str(data)
 
-def getbundle(data, oArgs):
-    if oArgs == 'INC':
+def getbundle(data, params, inc):
+    if inc:
         new_url = reqsget[data[0]][:-3] + data[1]
         return new_url
     else:
