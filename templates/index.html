@@ -12,6 +12,7 @@
        <script>
 
     $(document).ready(function () {
+
         $("#type").change(function () {
             var val = $(this).val();
             if (val == "GET") {
@@ -27,7 +28,23 @@
                 $("#request").html("<option value='test'>item3: test 1</option><option value='test2'>item3: test 2</option>");
             }
         });
-});</script>
+
+
+         var myResults = []
+
+
+        $("#button-submit").hover(function(){
+            {% for key in result %}
+               myResults.push({{key}});
+               $('.result-info').html(myResults[0]);
+
+            {% endfor %}
+
+
+          })
+       });
+
+   </script>
 
 
    </head>
@@ -80,7 +97,7 @@
             File:<br />
             <input type="file" class='form-control' name="file"> <br /> <br />
 
-            <input class="btn btn-primary" type="submit" value="Submit"> <br>
+            <input class="btn btn-primary" type="submit" id ='button-submit' value="Submit"> <br>
 
 
       
@@ -91,9 +108,11 @@
 
 
 <div class="col-md-6">
+   <div class="result-info">
          {% autoescape false %}
             {{result}}
               {% endautoescape %}
+   </div>
 </div>
 
       
