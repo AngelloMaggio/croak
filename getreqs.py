@@ -9,7 +9,8 @@ get_requests = {'repositories': 'api/repositories',
                 'license': 'api/system/license',
                 'build': 'api/build/INC',
                 'folder_info': 'api/storage/INC',
-                'file_info': 'api/storage/INC'
+                'file_info': 'api/storage/INC',
+                'last_modified': 'api/storage/INC'
                 }
 
 # Dictionary of functions to handle more complex api urls
@@ -21,6 +22,8 @@ get_functions = {
             'build': lambda x, y: build(x, y),
             'folder_info': lambda x, y: file_folder_info(x, y),
             'file_info': lambda x, y: file_folder_info(x, y),
+            'last_modified': lambda x, y: file_folder_info(x, y),
+            'file_statistics': lambda  x,y: file_folder_info(x, y)
             }
 
 
@@ -31,6 +34,12 @@ def file_folder_info(data, params):
 
     if data[0] == 'folderinfo':
         new_url += '/'
+
+    if data[0] == 'last_modified':
+        new_url += '?lastModified'
+
+    if data[0] == 'file_statistics':
+        new_url += '?stats'
 
     return new_url
 
