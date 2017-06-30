@@ -2,162 +2,176 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import postreqs, putreqs, getreqs, deletereqs
 import requests
+from flask_socketio import SocketIO, send, emit
 # ##########################
 
 # Create flask instance
 app = Flask(__name__)
+socketio = SocketIO(app)
 
+
+@socketio.on('my_event')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
+    result = get_result(json)
+    out_dir = {}
+
+    if isinstance(result, str):
+        print "It's a string"
+        out_dir['value'] = result
+    elif isinstance(result, list):
+        print "It's a list"
+
+        for i in range(len(result)):
+            out_dir[str(i+1)] = result[i]
+    else:
+        print "It's a dictionary"
+        out_dir = result
+
+    print out_dir
+    send_result(out_dir)
 
 # To run on main page
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def hello_world(result="Waiting for submit"):
     name = "test"
     return render_template("index.html", result=result, request_get=getreqs.get_requests.keys(), \
                            request_post=postreqs.post_requests.keys(), request_put=putreqs.reqsput.keys())
 
 
-# To run on form submit
-@app.route('/action', methods=['POST', 'GET'])
-def action():
+def send_result(result):
+    socketio.emit('receive data', result)
 
-    print request
-    #print request.host
-    #print request.parameters
-    #print request.file
+def get_result(form_values):
+
+    print "Inside the get_result function"
 
 
-    # If the request to the flask server is of POST nature
-    # It should always be the case, but if it's a GET request, something's gone wrong
-    if request.method == 'POST':
+    # Result holds the value of the form fields
+    # in case of error, this is what will be returned
+    try:
+        result = form_values
 
-        # Result holds the value of the form fields
-        # in case of error, this is what will be returned
+        # Let's gather some of the variables from the form
+        url = form_values['host']
+        req = form_values['request'].lower().split(' ')
+        params = form_values['parameters']
+        filename = form_values['file']
+    except Exception as e:
+        print "Error trying to gather value from form"
+        print "Error:", e
+
+    # Headers indicate we are dealing with json data
+    headers = {'content-type': 'application/json'}
+
+    # This checks for the request type selected in the form
+    if form_values['type'] == "POST":
+
         try:
-            result = request.form
-
-            # Let's gather some of the variables from the form
-            url = request.form['host']
-            req = request.form['request'].lower().split(' ')
-            params = request.form['parameters']
-            filename = request.form['file']
+            url_req = url + postreqs.post_requests[req[0]]
         except Exception as e:
-            print "Error trying to gather value from form"
+            print "Error during URL formatting function"
+            print "Error:", e
+        try:
+            if url_req[-3:] == 'INC':
+                url_req = url + postreqs.post_functions[req[0]](req, params)
+        except Exception as e:
+            print "Error during URL formatting function"
+            print "Error:", e
+        try:
+            request_response = requests.post(url_req,auth=(form_values['username'], form_values['password']), headers=headers)
+        except Exception as e:
+            print "Error during post request"
             print "Error:", e
 
-        # Headers indicate we are dealing with json data
-        headers = {'content-type': 'application/json'}
+    # If request type selected is GET
+    elif form_values['type'] == "GET":
 
-        # This checks for the request type selected in the form
-        if request.form['reqtype'] == "POST":
+        url_req = url + getreqs.get_requests[req[0]]
+
+        if url_req[-3:] == 'INC':
 
             try:
-                url_req = url + postreqs.post_requests[req[0]]
+                url_req = url + getreqs.get_functions[req[0]](req, params)
             except Exception as e:
                 print "Error during URL formatting function"
                 print "Error:", e
-            try:
-                if url_req[-3:] == 'INC':
-                    url_req = url + postreqs.post_functions[req[0]](req, params)
-            except Exception as e:
-                print "Error during URL formatting function"
-                print "Error:", e
-            try:
-                request_response = requests.post(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
-            except Exception as e:
-                print "Error during post request"
-                print "Error:", e
-
-        # If request type selected is GET
-        elif request.form['reqtype'] == "GET":
-
-            url_req = url + getreqs.get_requests[req[0]]
-
-            if url_req[-3:] == 'INC':
-
-                try:
-                    url_req = url + getreqs.get_functions[req[0]](req, params)
-                except Exception as e:
-                    print "Error during URL formatting function"
-                    print "Error:", e
-
-            try:
-                request_response = requests.get(url_req,auth=(request.form['username'], request.form['password']), headers=headers)
-            except Exception as e:
-                print "Error while making API request"
-                print "Error:", e
-                request_response = ''
-
-
-        elif request.form['reqtype'] == "PUT":
-
-            try:
-                url_req = url + putreqs.reqsput[req[0]]
-
-            except Exception as e:
-                print "Request could not be found."
-                print "Error:", e
-
-            try:
-                if url_req[-3:]=='INC':
-                    url_req = url + putreqs.putfuncs[req[0]](req, params)
-
-            except Exception as e:
-                print "Error during URL formatting function"
-                print "Error: ", e
-
-            if filename != '':
-                try:
-                    files = {'file': open(filename, 'rb')}
-                except Exception as e:
-                    print "Error while trying to open file, perhaps wrong name or incomplete path"
-                    print "Error:", e
-            else:
-                files = {}
-
-            try:
-                request_response = requests.put(url_req,auth=(request.form['username'], request.form['password']), headers=headers, files=files)
-            except Exception as e:
-                print "Error while making API request"
-                print "Error:", e
-                request_response = ''
-
-        elif request.form['reqtype'] == "DEL":
-
-            try:
-                url_req = url + deletereqs.delete_requests[req[0]]
-
-            except Exception as e:
-                print "Request could not be found."
-                print "Error:", e
-
-            try:
-                if url_req[-3:] == 'INC':
-                    url_req = url + deletereqs.delete_functions[req[0]](req, params)
-            except Exception as e:
-                print "Error during URL formatting function."
-                print "Error:", e
-
-            try:
-                request_response = requests.delete(url_req, auth=(request.form['username'], request.form['password']), headers=headers)
-            except Exception as e:
-                print "Error during API request."
-                print "Error:", e
-                request_response = ''
-
-        else:
-            request_response = "No Request Type Selected"
 
         try:
-            result = request_response.json()
+            request_response = requests.get(url_req,auth=(form_values['username'], form_values['password']), headers=headers)
+        except Exception as e:
+            print "Error while making API request"
+            print "Error:", e
+            request_response = ''
+
+
+    elif form_values['type'] == "PUT":
+
+        try:
+            url_req = url + putreqs.reqsput[req[0]]
 
         except Exception as e:
-            print "Error while trying to make response into json. Returning full response."
-            result = request_response
+            print "Request could not be found."
+            print "Error:", e
 
+        try:
+            if url_req[-3:]=='INC':
+                url_req = url + putreqs.putfuncs[req[0]](req, params)
 
+        except Exception as e:
+            print "Error during URL formatting function"
+            print "Error: ", e
 
+        if filename != '':
+            try:
+                files = {'file': open(filename, 'rb')}
+            except Exception as e:
+                print "Error while trying to open file, perhaps wrong name or incomplete path"
+                print "Error:", e
+        else:
+            files = {}
 
-        return result
+        try:
+            request_response = requests.put(url_req,auth=(form_values['username'], form_values['password']), headers=headers, files=files)
+        except Exception as e:
+            print "Error while making API request"
+            print "Error:", e
+            request_response = ''
+
+    elif form_values['type'] == "DEL":
+
+        try:
+            url_req = url + deletereqs.delete_requests[req[0]]
+
+        except Exception as e:
+            print "Request could not be found."
+            print "Error:", e
+
+        try:
+            if url_req[-3:] == 'INC':
+                url_req = url + deletereqs.delete_functions[req[0]](req, params)
+        except Exception as e:
+            print "Error during URL formatting function."
+            print "Error:", e
+
+        try:
+            request_response = requests.delete(url_req, auth=(form_values['username'], form_values['password']), headers=headers)
+        except Exception as e:
+            print "Error during API request."
+            print "Error:", e
+            request_response = ''
+
+    else:
+        request_response = "No Request Type Selected"
+
+    try:
+        result = request_response.json()
+
+    except Exception as e:
+        print "Error while trying to make response into json. Returning full response."
+        result = request_response
+
+    return result
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app)

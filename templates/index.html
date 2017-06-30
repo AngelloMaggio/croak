@@ -9,10 +9,11 @@
       <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
       <script type = "text/javascript" src = "/static/js/bootstrap.min.js"></script>
+       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
        <script>
 
-    $(document).ready(function () {
+           $(document).ready(function () {
 
         $("#type").change(function () {
             var val = $(this).val();
@@ -29,20 +30,71 @@
                 $("#request").html("<option value='test'>item3: test 1</option><option value='test2'>item3: test 2</option>");
             }
         });
-       
+
        });
 
-         function myFunction (){
-            $.ajax({
-               type: 'GET',
-               url: '/action',
-               success: function(data) {
-               console.log(data);
-               }
-         })
+       </script>
 
-      };
 
+       <script>
+
+ $(document).ready(function() {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            socket.emit('my_event', {data: 'I\'m connected!'});
+            });
+
+        socket.on('my_response', function(msg) {
+                $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+            });
+
+
+        $('form#req_form').submit(function(event) {
+            socket.emit('my_event', {type: $('#type').val(), host: $('#host').val(), username: $('#username').val(), password: $('#password').val(),request: $('#request').val(), parameters: $('#parameters').val(), file: $('#file').val()});
+            return false;
+           });
+
+
+
+$.makeTable = function (mydata) {
+            var table = $('<table border=1>');
+            var tblHeader = "<tr>";
+            for (var k in mydata[0]) tblHeader += "<th>" + k + "</th>";
+            tblHeader += "</tr>";
+            $(tblHeader).appendTo(table);
+            $.each(mydata, function (index, value) {
+                var TableRow = "<tr>";
+                $.each(value, function (key, val) {
+                    TableRow += "<td>" + val + "</td>";
+                });
+                TableRow += "</tr>";
+                $(table).append(TableRow);
+            });
+            return ($(table));
+        };
+
+
+
+
+
+        socket.on('receive data', function(data) {
+
+            $('#output').empty();
+            var mydata = eval(data);
+            var table = $.makeTable(mydata);
+            $(table).appendTo("#output");
+
+            });
+
+
+
+
+
+
+
+
+});
    </script>
 
    <img id="logo" src="static/images/design.png" /> 
@@ -52,10 +104,17 @@
 
       <div class="container">
           <div class="col-md-6">
-             <form onsubmit="myFunction()" method="POST">
-             <div class="form-group">
+
+
+
+
+             <form id="req_form" name="req_form" method="POST" action="#">
+
+                 <div class="form-group">
+
+
             Request:
-             <select id="type" class="form-control" name="reqtype">
+             <select id="type" class="form-control" name="type">
                  <option value="">-- select one -- </option>
                 <option value="GET">Get</option>
                 <option value="POST">Post</option>
@@ -70,11 +129,11 @@
 
 
             Host:<br />
-            <input type="text" class='form-control' name="host"> <br />
+            <input type="text" class='form-control' name="host" id="host"> <br />
             Username:<br />
-            <input type="text" class='form-control' name="username"> <br />
+            <input type="text" class='form-control' name="username" id="username"> <br />
             Password:<br />
-            <input type="password" class='form-control' name="password"> <br />
+            <input type="password" class='form-control' name="password" id="password"> <br />
 
 
             Request:<br />
@@ -82,11 +141,12 @@
                 <option value="">-- select one -- </option>
             </select><br />
              Parameter:<br />
-            <input type="text" class='form-control' name="parameters"> <br />
+            <input type="text" class='form-control' name="parameters" id="parameters"> <br />
             File:<br />
-            <input type="file" class='form-control' name="file"> <br /> <br />
+            <input type="file" class='form-control' name="file" id="file"> <br /> <br />
 
-            <input class="btn btn-primary" type="submit" id ='button-submit' value="Submit"> <br>
+
+            <input class="btn btn-primary" type="submit" value="Submit"> <br>
 
 
       
@@ -99,11 +159,10 @@
             <div class="col-md-6">
                <h1> Result: </h1>
                <div class="jumbotron result-info text-center">
-                  <div class="container">
+                  <div class="container" id="output" name="output">
 
-                     {% autoescape false %}
-                        {{result}}
-                     {% endautoescape %}
+
+
                   </div>
                </div>
             </div>
