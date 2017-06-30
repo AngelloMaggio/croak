@@ -60,17 +60,32 @@
 $.makeTable = function (mydata) {
             var table = $('<table border=1>');
             var tblHeader = "<tr>";
-            for (var k in mydata[0]) tblHeader += "<th>" + k + "</th>";
+
+            console.log("We made it to maketable");
+
+
+            $.each(mydata[1], function(key, value){
+                tblHeader += "<td style ='word-break:break-all;'>" + key.toString() + "</td>";
+                console.log("KEY:" + key);
+                });
+
+
+            console.log("We made it past the first loop, let gooo");
+
             tblHeader += "</tr>";
             $(tblHeader).appendTo(table);
+            console.log("appended to header");
+
             $.each(mydata, function (index, value) {
                 var TableRow = "<tr>";
                 $.each(value, function (key, val) {
-                    TableRow += "<td>" + val + "</td>";
+                    TableRow += "<td style ='word-break:break-all;'>" + val + "</td>";
                 });
                 TableRow += "</tr>";
                 $(table).append(TableRow);
             });
+
+            console.log("We made it to the return, almost there");
             return ($(table));
         };
 
@@ -87,6 +102,16 @@ $.makeTable = function (mydata) {
 
             });
 
+        socket.on('receive data dict', function(data) {
+
+            $('#output').empty();
+            console.log("Gonna do the eval, it's gonna crash");
+
+            var table = $.makeTable(data);
+            $(table).appendTo("#output");
+
+            });
+
 
 
 
@@ -97,7 +122,7 @@ $.makeTable = function (mydata) {
 });
    </script>
 
-   <img id="logo" src="static/images/design.png" /> 
+   <img id="logo" src="static/images/design.png" width="350" height="90"/>
    </head>
 
       <body>
@@ -119,8 +144,6 @@ $.makeTable = function (mydata) {
                 <option value="GET">Get</option>
                 <option value="POST">Post</option>
                 <option value="PUT">Put</option>
-
-                 <option role="separator" class="divider"></option>
 
                  <option value="DELETE">Delete</option>
             </select>

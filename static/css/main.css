@@ -2,4 +2,14 @@
 	background-color: #8cf07c;	
 }
 
+table {
+    table-layout:fixed;
+    width:100%;
+}
+
+td {
+  word-wrap:break-word;
+  word-break:break-all;
+}
+
 

@@ -19,17 +19,22 @@ def handle_my_custom_event(json):
     if isinstance(result, str):
         print "It's a string"
         out_dir['value'] = result
+        send_result(out_dir)
+
     elif isinstance(result, list):
         print "It's a list"
 
         for i in range(len(result)):
             out_dir[str(i+1)] = result[i]
+        send_result(out_dir)
     else:
         print "It's a dictionary"
-        out_dir = result
+
+        out_dir['value'] = result
+        send_result2(out_dir)
 
     print out_dir
-    send_result(out_dir)
+
 
 # To run on main page
 @app.route('/', methods=['POST', 'GET'])
@@ -41,6 +46,9 @@ def hello_world(result="Waiting for submit"):
 
 def send_result(result):
     socketio.emit('receive data', result)
+
+def send_result2(result):
+    socketio.emit('receive data dict', result)
 
 def get_result(form_values):
 
@@ -166,6 +174,7 @@ def get_result(form_values):
 
     try:
         result = request_response.json()
+
 
     except Exception as e:
         print "Error while trying to make response into json. Returning full response."
