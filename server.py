@@ -20,6 +20,12 @@ def hello_world(result="Waiting for submit"):
 @app.route('/action', methods=['POST', 'GET'])
 def action():
 
+    print request
+    #print request.host
+    #print request.parameters
+    #print request.file
+
+
     # If the request to the flask server is of POST nature
     # It should always be the case, but if it's a GET request, something's gone wrong
     if request.method == 'POST':
@@ -151,9 +157,7 @@ def action():
 
 
 
-        return render_template("index.html", result=result, request_get=getreqs.get_requests.keys(), \
-                               request_post=postreqs.post_requests.keys(), request_put=putreqs.reqsput.keys())
-
+        return result
 
 if __name__ == '__main__':
     app.run()
