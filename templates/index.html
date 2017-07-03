@@ -65,7 +65,7 @@ $.makeTable = function (mydata) {
 
 
             $.each(mydata[1], function(key, value){
-                tblHeader += "<td style ='word-break:break-all;'>" + key.toString() + "</td>";
+                tblHeader += "<td style ='word-break:break-all;'><b>" + key.toString() + "</b></td>";
                 console.log("KEY:" + key);
                 });
 
@@ -79,7 +79,20 @@ $.makeTable = function (mydata) {
             $.each(mydata, function (index, value) {
                 var TableRow = "<tr>";
                 $.each(value, function (key, val) {
+
+                    if (typeof(val) == 'object'){
+                    console.log("It's an object!");
+                    TableRow += "<td style ='word-break:break-all;'>" + JSON.stringify(val) + "</td>";
+
+                    } else{
+
+                    console.log("It's not an object!")
                     TableRow += "<td style ='word-break:break-all;'>" + val + "</td>";
+
+
+                    }
+
+
                 });
                 TableRow += "</tr>";
                 $(table).append(TableRow);
@@ -105,7 +118,7 @@ $.makeTable = function (mydata) {
         socket.on('receive data dict', function(data) {
 
             $('#output').empty();
-            console.log("Gonna do the eval, it's gonna crash");
+            //console.log("Gonna do the eval, it's gonna crash");
 
             var table = $.makeTable(data);
             $(table).appendTo("#output");
@@ -122,13 +135,14 @@ $.makeTable = function (mydata) {
 });
    </script>
 
-   <img id="logo" src="static/images/design.png" width="350" height="90"/>
+
    </head>
 
       <body>
-
+        <img id="logo" src="static/images/design.png" width="350" height="90"/>
       <div class="container">
-          <div class="col-md-6">
+
+          <div class="col-md-4">
 
 
 
@@ -179,7 +193,7 @@ $.makeTable = function (mydata) {
           </div>
 
 
-            <div class="col-md-6">
+            <div class="col-md-8">
                <h1> Result: </h1>
                <div class="jumbotron result-info text-center">
                   <div class="container" id="output" name="output">

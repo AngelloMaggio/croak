@@ -30,8 +30,13 @@ def handle_my_custom_event(json):
     else:
         print "It's a dictionary"
 
-        out_dir['value'] = result
-        send_result2(out_dir)
+        if len(result) == 1:
+            result = result[result.keys()[0]]
+            out_dir['value'] = result
+            send_result(out_dir)
+        else:
+            out_dir['value'] = result
+            send_result2(out_dir)
 
     print out_dir
 
@@ -53,7 +58,6 @@ def send_result2(result):
 def get_result(form_values):
 
     print "Inside the get_result function"
-
 
     # Result holds the value of the form fields
     # in case of error, this is what will be returned
