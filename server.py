@@ -31,9 +31,13 @@ def handle_my_custom_event(json):
         print "It's a dictionary"
 
         if len(result) == 1:
+
             result = result[result.keys()[0]]
-            out_dir['value'] = result
+            for i in range(len(result)):
+                out_dir[str(i+1)] = result[i]
             send_result(out_dir)
+
+
         else:
             out_dir['value'] = result
             send_result2(out_dir)
